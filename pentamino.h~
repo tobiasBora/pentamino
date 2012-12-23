@@ -1,0 +1,14 @@
+#ifndef PENTAMINO_H
+#define PENTAMINO_H
+
+class Pentamino
+{
+public:
+    Pentamino();
+
+
+protected:
+
+};
+
+#endif // NAVETTE_H

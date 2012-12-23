@@ -1,0 +1,119 @@
+#include <iostream>
+#include <stdlib.h>
+#include "plateau.h"
+#include "string"
+#include <fstream>
+#include <vector>
+#include <typeinfo>
+
+using namespace std;
+
+Plateau::Plateau()
+{
+     cout << "Création du plateau" << endl;
+
+}
+
+void Plateau::setPlateau(string fileName)
+{
+     // Pour remplir le plateau avec le contenu d'un fichier
+     // 00000000000
+     // 00000000000
+     // 0000  00000
+     // 00000000000
+     // 00000000000
+
+     
+     ifstream fichier(fileName.c_str(), ios::in);
+     // char caractere;
+     string ligne;
+     if (fichier)
+     {
+	  
+// while getline(file, varstring)
+	  int maxChar = 0;
+	  int size = 0;
+	  int nbLine = 0;
+	  while(getline(fichier, ligne))
+	  {
+	       size = ligne.size();
+	       if(size > maxChar)
+		    maxChar = size;
+	       nbLine++;
+	  }
+	  cout << maxChar << endl;
+	  fichier.clear();
+
+	  // m_tableau(ligne, vector<string>(maxChar));
+	  // m_tableau = new Vector<vector<string>>(ligne, vector<string>(maxChar));
+	  m_tableau->clear();
+	  cout << "Nombre de lignes : " << nbLine << " nombre de caractères : " << maxChar << endl;
+	  m_tableau = new vector< vector<string> >(nbLine, vector<string>(maxChar, "0"));
+	  nbLine = 0;
+
+	  // while(getline(fichier, ligne))
+	  // {
+	  //      for(unsigned int i = 0; i < ligne.size(); i++)
+	  //      {
+	  // 	    caractere = ligne[i];
+	  // 	    if(caractere == ' ' && caractere == '0')
+	  // 	    {
+	  // 		 // Les espaces et 0 sont considérés comme des cases interdites
+	  // 		 m_tableau[nbLine][i] = "0";
+	  // 	    }
+	  // 	    else
+	  // 	    {
+	  // 		 // Les 1 ou les autres caractères sont interdits
+	  // 		 m_tableau[nbLine][i] = "1";	 
+	  // 	    }
+	  // 	    }
+
+	  //      nbLine ++;
+	  // }
+	       
+	  fichier.close();
+     }
+     else
+     {
+	  cerr << "impossible d'ouvrir le fichier";
+
+     }
+	       
+     
+}
+
+void Plateau::afficher()
+{
+     for(unsigned int i = 0; i < m_tableau->size(); i++)
+     {
+	  // for(unsigned int j = 0; j < m_tableau[i].size(); j++)
+	  // {
+	       // cout << "i = " << i << " j = " << j << m_tableau[i].size() << endl;
+	       // typeid( m_tableau[i][j]);
+
+	  // }
+	       cout << "Taille sous tableau :" << m_tableau->at(1).size() << endl;
+	       cout << "  un élément : " << getEl(i,5);;
+	  cout << endl;
+     }
+}
+
+// Fonctions get :
+
+string Plateau::getEl(int x, int y)
+{
+     return m_tableau->at(x)[y];
+}
+
+int Plateau::getNbLines()
+{
+     return m_tableau->size();
+}
+
+// Fonctions set :
+
+void Plateau::setEl(int x,int y,std::string value)
+{
+     m_tableau->at(x)[y] = value;
+}
+

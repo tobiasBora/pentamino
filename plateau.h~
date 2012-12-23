@@ -1,0 +1,27 @@
+#ifndef PLATEAU_H
+#define PLATEAU_H
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Plateau
+{
+public:
+     Plateau();
+     void setPlateau(std::string file);
+     void afficher();
+     void refresh();
+     // get
+     std::string getEl(int x, int y);
+     int getNbLines();
+     int getNbColonne();
+     // set
+     void setEl(int x, int y, std::string value);
+
+protected:
+std::vector< std::vector<std::string> > *m_tableau;
+
+};
+
+#endif

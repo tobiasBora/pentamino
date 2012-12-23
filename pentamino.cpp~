@@ -1,0 +1,30 @@
+#include "pentamino.h"
+#include <iostream>
+#include <stdlib.h>
+#include "plateau.h"
+
+using namespace std;
+
+Pentamino::Pentamino()
+{
+     cout << "Création de l'instance de pentamino" << endl;
+
+     // Création du plateau
+     plateau = new Plateau();
+     plateau->setPlateau("plateau1.txt");
+     plateau->afficher();
+     
+     // Création des pièces
+     
+}
+/*
+void Pentamino::setPlateau(string file)
+{
+        
+}*/
+
+void Pentamino::lancer()
+{
+     cout << "C'est parti !";
+
+}
