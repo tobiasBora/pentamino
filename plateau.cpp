@@ -5,6 +5,15 @@
 #include <fstream>
 #include <vector>
 #include <typeinfo>
+#include "piece.h"
+/*
+  Dans un tableau :
+  0 = Case interdite (hors tableau)
+  1 = Case vide
+  2,3... = Case prise par une autre pièce
+
+
+*/
 
 
 using namespace std;
@@ -16,8 +25,7 @@ Plateau::Plateau()
 }
 
 void Plateau::setPlateau(string fileName)
-{ 
-     
+{     
      // Pour remplir le plateau avec le contenu d'un fichier
      // 00000000000
      // 00000000000
@@ -68,7 +76,8 @@ void Plateau::setPlateau(string fileName)
 	  	    else
 	  	    {
 	  		 // Les 1 ou les autres caractères sont interdits
-	  		 setEl(nbLine,i,"1");	 
+	  		 // setEl(nbLine,i,"1");
+			 setEl(nbLine, i, &caractere);
 	  	    }
 	       }
 
@@ -155,7 +164,8 @@ void Plateau::setPlateauString(string chaine)
 	       else
 	       {
 		    // Les 1 ou les autres caractères sont interdits
-		    setEl(line, currentChar, "1");	 
+		    // setEl(line, currentChar, "1");
+		    setEl(line, currentChar, &caractere);
 	       }
 	       
 	       currentChar++;
@@ -163,6 +173,57 @@ void Plateau::setPlateauString(string chaine)
      }
      
      
+}
+
+int Plateau::addPiece(Piece *piece, int x, int y)
+{
+     // On retourne -1 si la piece dépasse le tableau
+     // On retourne -2 si la piece chevauche une autre pièce ou une case interdite
+
+     // On vérifie qu'on peut le faire au niveau de la place
+     if( getNbLines() < x + piece->getNbLines()
+	|| getNbColonnes() < y + piece->getNbColonnes())
+     {
+	  return -1;
+     }
+     else
+     {
+	  // Si a première vue on ne dépasse pas
+	  // On vérifie qu'un peut le faire sans placer
+	  // la pière dans un endroit interdit
+	  int nbLines = piece->getNbLines();
+	  int nbColonnes = piece->getNbColonnes();
+	  for(int i = 0; i < nbLines; i++)
+	  {
+	       for(int j = 0; j < nbColonnes; j++)
+	       {
+		    // Si la piece chevauche une case non autorisée
+		    if(piece->getEl(i,j) != "0" && getEl(i+x,j+y) != "1")
+		    {
+			 return -2;
+		    }
+	       }
+
+	  }
+	  // Si on n'a pas eu de problème on remplit
+	  string caractere;
+	  for(int i=0; i < nbLines; i++)
+	  {
+	       for(int j=0; j < nbColonnes; j++)
+	       {
+		    caractere = piece->getEl(i,j);
+		    // Si la case de la piece est non vide
+		    if(caractere != "0")
+		    {
+			 setEl(i+x,j+y,caractere);
+		    }
+	       }
+
+	  }
+	  return 1;
+	  
+     }
+
 }
 
 void Plateau::afficher()

@@ -6,6 +6,11 @@
 #include <vector>
 #include <typeinfo>
 
+/*
+  Si la case vaut 0, c'est une partie vide de la pièce, un trou
+  Pour tout autre caractère, c'est une partie de la pièce
+ */
+
 
 using namespace std;
 
@@ -68,7 +73,8 @@ void Piece::setPiece(string fileName)
 	  	    else
 	  	    {
 	  		 // Les 1 ou les autres caractères sont interdits
-	  		 setEl(nbLine,i,"1");	 
+	  		 // setEl(nbLine,i,"1");
+			 setEl(nbLine, i, &caractere);
 	  	    }
 	       }
 
@@ -155,7 +161,8 @@ void Piece::setPieceString(string chaine)
 	       else
 	       {
 		    // Les 1 ou les autres caractères sont interdits
-		    setEl(line, currentChar, "1");	 
+		    // setEl(line, currentChar, "1");
+		    setEl(line, currentChar, &caractere);
 	       }
 	       
 	       currentChar++;

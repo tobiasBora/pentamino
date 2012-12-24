@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include "piece.h"
 	
 class Plateau
 {
@@ -13,8 +13,10 @@ public:
      void setPlateau(std::string file);
      /* void setPlateau(std::string array[]); */
      void setPlateauString(std::string chaine);
+     int addPiece(Piece *piece, int x, int y);
+     
      void afficher();
-     void refresh();
+
      // get
      std::string getEl(int x, int y);
      int getNbLines();
