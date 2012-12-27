@@ -246,6 +246,44 @@ void Plateau::afficher()
      }
 }
 
+int Plateau::check(int what)
+{
+     // -------- Entrée ---------
+     // what :
+     // 0 (valeur par défaut) = vérifie juste si le tableau est remplit.
+
+     
+     // ------- Sortie ----------
+     // Cette fonction vérifie l'état du plateau :
+     // 0 = rien à signaler
+     // 1 = Il ne reste plus aucune case non remplie par 1.
+     // -10 = Erreur dans l'execution
+     // TODO :
+     // -1 = il n'y a aucun bloc fermé de plus de "what" caractères (si what > 0)
+
+     if(what == 0)
+     {
+	  int lines = getNbLines();
+	  int colonnes = getNbColonnes();
+	  
+	  // On vérifie si il n'est pas remplit :
+	  for(int i=0; i<lines; i++)
+	  {
+	       for(int j=0; j<colonnes; j++)
+	       {
+		    if(getEl(i,j) == "1")
+		    {
+			 return 0;
+		    }
+	       }
+	  }
+     
+	  return 1;
+     }
+
+     return -10;
+}
+
 
 // Fonctions get :
 

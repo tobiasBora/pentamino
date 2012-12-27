@@ -14,8 +14,8 @@ public:
      /* void setPlateau(std::string array[]); */
      void setPlateauString(std::string chaine);
      int addPiece(Piece *piece, int x, int y);
-     
      void afficher();
+     int check(int what=0);
 
      // get
      std::string getEl(int x, int y);
