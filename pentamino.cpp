@@ -70,8 +70,19 @@ Pentamino::Pentamino()
      tableauPieces->push_back( new Piece("1111\n0001"));
      tableauPieces->push_back( new Piece("11\n01\n011"));
      tableauPieces->push_back( new Piece("11\n01\n11"));
-     tableauPieces->push_back( new Piece("01\n111\n001"));
-
+     // tableauPieces->push_back( new Piece("01\n111\n001"));
+     // Avec rotation :
+     tableauPieces->push_back( new Piece("011\n11\n01"));
+     /*  
+	 010
+	 111
+	 001
+	 
+	 011
+	 110
+	 010
+     */
+     
      cout << "On renomme le tout " << endl;
      tableauPieces->at(0)->rename("a");
      tableauPieces->at(1)->rename("b");
@@ -197,24 +208,27 @@ Plateau *Pentamino::remplirRecur(Plateau *plateau, vector< Piece* > *pieces, int
 	       pieces->at(i)->afficher();
 	       cout << endl;
 	  }
+
 	  
 	  plateauCopy = new Plateau( *plateau);
-	  retourAjout = plateauCopy->addPiece(pieces->at(i), array[0], array[1]);
-	  if(retourAjout > 0)
+	  for(int angle = 0; angle <= 5; angle++)
 	  {
-	       // Si ça fonctionne on envoie à la fonction courrante le nouveau tableau et les nouvelles pièces (penser à enlever la pièce courante)
-	       // pieces_del = pieces;
-	       vector< Piece* > pieces_del(*pieces);
-	       pieces_del.erase(pieces_del.begin()+i);
-	       retourPlateau = remplirRecur(plateauCopy, &pieces_del, niveau + 1, chaine + pieces->at(i)->getName());
-	       // Si la fonction retourne un tableau plein, on le retourne
-	       // (on a gagné)
-	       if(retourPlateau)
+	       retourAjout = plateauCopy->addPiece(pieces->at(i)->transform(angle), array[0], array[1]);
+	       if(retourAjout > 0)
 	       {
-		    // retourPlateau->afficher();
-		    return retourPlateau;
+		    // Si ça fonctionne on envoie à la fonction courrante le nouveau tableau et les nouvelles pièces (penser à enlever la pièce courante)
+		    // pieces_del = pieces;
+		    vector< Piece* > pieces_del(*pieces);
+		    pieces_del.erase(pieces_del.begin()+i);
+		    retourPlateau = remplirRecur(plateauCopy, &pieces_del, niveau + 1, chaine + pieces->at(i)->getName());
+		    // Si la fonction retourne un tableau plein, on le retourne
+		    // (on a gagné)
+		    if(retourPlateau)
+		    {
+			 // retourPlateau->afficher();
+			 return retourPlateau;
+		    }
 	       }
-
 
 	  }
 	  delete plateauCopy;
