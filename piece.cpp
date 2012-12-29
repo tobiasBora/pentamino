@@ -6,6 +6,9 @@
 #include <vector>
 #include <typeinfo>
 
+// TODO :
+// -> gérer la rotation des pieces
+
 /*
   Si la case vaut 0, c'est une partie vide de la pièce, un trou
   Pour tout autre caractère, c'est une partie de la pièce
@@ -17,7 +20,25 @@ using namespace std;
 Piece::Piece()
 {
      cout << "Création de la pièce" << endl;
+     m_tableau = 0;
+     m_name = "?";
+}
 
+Piece::Piece(string chaine)
+{
+     setPieceString(chaine);
+     m_name = "?";
+}
+
+Piece::Piece(std::vector< std::vector<std::string> > *tableau)
+{
+     m_name = "?";
+     m_tableau = new vector< vector<string> >(tableau);
+}
+
+Piece::~Piece()
+{
+     delete m_tableau;
 }
 
 void Piece::setPiece(string fileName)
@@ -205,11 +226,21 @@ int Piece::getNbColonnes()
 {
      return m_tableau->at(0).size();
 }
-// Fonctions set :
 
-void Piece::setEl(int x,int y,std::string value)
+int Piece::getNbCases()
 {
-     m_tableau->at(x)[y] = value;
+     int lignes = getNbLines();
+     int colonnes = getNbColonnes();
+     int n = 0;
+     for(int i=0; i<lignes;i++)
+     {
+	  for(int j=0; j<colonnes; j++)
+	  {
+	       if(getEl(i,j)!="0")
+		    n++;
+	  }
+     }
+     return n;
 }
 
 string Piece::toString()
@@ -227,3 +258,120 @@ string Piece::toString()
      return chaine;
 }
 
+string Piece::getName()
+{
+     return m_name;
+}
+
+
+int *Piece::searchFirstEmptyCase()
+{
+     // Retourne un tableau de deux cases :
+     int lines = getNbLines();
+     int colonnes = getNbColonnes();
+     int *array= new int[2];
+
+     array[0]=-1;
+     array[1]=-1;
+     
+     // On vérifie si il n'est pas remplit :
+     for(int i=0; i<lines; i++)
+     {
+	  for(int j=0; j<colonnes; j++)
+	  {
+	       if(getEl(i,j) != "0")
+	       {
+		    array[0]=i;
+		    array[1]=j;
+		    return array;
+	       }
+	  }
+     }
+
+     return array;
+}
+
+
+// Fonctions set :
+
+void Piece::setEl(int x,int y,std::string value)
+{
+     m_tableau->at(x)[y] = value;
+}
+
+void Piece::remplace(string avt, string apres)
+{
+
+     int lignes = getNbLines();
+     int colonnes = getNbColonnes();
+     for(int i=0; i<lignes;i++)
+     {
+	  for(int j=0; j<colonnes; j++)
+	  {
+	       if(getEl(i,j) == avt)
+		    setEl(i,j,apres);
+	  }
+     }
+}
+
+
+void Piece::rename(string apres)
+{
+     m_name = apres;
+     int lignes = getNbLines();
+     int colonnes = getNbColonnes();
+     for(int i=0; i<lignes;i++)
+     {
+	  for(int j=0; j<colonnes; j++)
+	  {
+	       if(getEl(i,j) != "0")
+		    setEl(i,j,apres);
+	  }
+     }
+
+}
+
+Piece *transform(int angle)
+{
+     // On fait tourner la piece d'un angle donné :
+     // 0 = rien
+     // 1 = 90° sens trigo
+     // 2 = 180°
+     // 3 = 90° sens horaire
+     // 4 = symétrie horizontale
+     // 5 = symétrie verticale
+
+     if(angle == 0)
+     {
+	  return *this;
+     }
+     
+     int nbLines = getNbLines();
+     int nbColonnes = getNbColonnes();
+     if(angle == 1 || angle == 3)
+	  tabFinal = new vector< vector<string> >(nbColonnes, vector<string>(nbLines, "0"));
+     else
+	  tabFinal = new vector< vector<string> >(nbLines, vector<string>(nbColonnes, "0"));
+
+     for(int i=0; i < nbLines, i++)
+     {
+	  for(int j=0; j < nbColonnes; j++)
+	  {
+	       if(angle == 0)
+		    tabFinal.at(i)->(j) = getEl(i,j);
+	       else if(angle == 1)
+		    tabFinal.at(nbColonnes - j - 1)->at(nbLines - i - 1) = getEl(i,j);
+	       else if(angle == 2)
+		    tabFinal.at(nbLines - i - 1)->at(nbColonnes - j - 1) = getEl(i,j);
+	       else if(angle == 3)
+		    tabFinal.at(j)->at(i) = getEl(i,j);
+	       else if(angle == 4)
+		    tabFinal.at(nbLines - i -1)->at(j) = getEl(i,j);
+	       else if(angle == 5)
+		    tabFinal.at(i)->at(nbColonnes - j - 1) = getEl(i,j);
+
+	  }
+     }
+
+     return new Piece(*tabFinal);
+}

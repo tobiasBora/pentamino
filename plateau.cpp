@@ -20,6 +20,7 @@ using namespace std;
 
 Plateau::Plateau()
 {
+     m_tableau = 0;
      cout << "Création du plateau" << endl;
 
 }
@@ -28,6 +29,11 @@ Plateau::Plateau()
 Plateau::Plateau(Plateau const& plateauACopier)
 {
      m_tableau = new vector< vector<string> >(*plateauACopier.m_tableau);
+}
+// Destructeur :
+Plateau::~Plateau()
+{
+     delete m_tableau;
 }
 
 void Plateau::setPlateau(string fileName)
@@ -188,7 +194,17 @@ int Plateau::addPiece(Piece *piece, int x, int y)
      // Sinon retourne 1 (aucun problème)
 
      // On vérifie qu'on peut le faire au niveau de la place
-     if( getNbLines() < x + piece->getNbLines()
+
+
+     // On décalle pour ne pas oublier les cas du style :
+     //  1
+     // 111
+     //  1
+     int* arrayPiece = piece->searchFirstEmptyCase();
+     x-=arrayPiece[0];
+     y-=arrayPiece[1];
+	  
+     if( x < 0 || y < 0 || getNbLines() < x + piece->getNbLines()
 	|| getNbColonnes() < y + piece->getNbColonnes())
      {
 	  return -1;
@@ -198,6 +214,7 @@ int Plateau::addPiece(Piece *piece, int x, int y)
 	  // Si a première vue on ne dépasse pas
 	  // On vérifie qu'un peut le faire sans placer
 	  // la pière dans un endroit interdit
+	  
 	  int nbLines = piece->getNbLines();
 	  int nbColonnes = piece->getNbColonnes();
 	  for(int i = 0; i < nbLines; i++)
@@ -245,6 +262,8 @@ void Plateau::afficher()
 	       Case = getEl(i,j);
 	       if(Case == "0")
 		    cout << " ";
+	       else if(Case == "1")
+		    cout << ".";
 	       else
 		    cout << Case;
 	  }
@@ -307,6 +326,23 @@ int Plateau::getNbLines()
 int Plateau::getNbColonnes()
 {
      return m_tableau->at(0).size();
+}
+
+
+int Plateau::getNbCases()
+{
+     int lignes = getNbLines();
+     int colonnes = getNbColonnes();
+     int n = 0;
+     for(int i=0; i<lignes;i++)
+     {
+	  for(int j=0; j<colonnes; j++)
+	  {
+	       if(getEl(i,j)!="0")
+		    n++;
+	  }
+     }
+     return n;
 }
 
 int *Plateau::searchFirstEmptyCase()

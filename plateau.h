@@ -12,6 +12,8 @@ public:
      Plateau();
      // Constructeur de copie :
      Plateau(Plateau const& plateauACopier);
+     // Destructeur :
+     ~Plateau();
      void setPlateau(std::string file);
      /* void setPlateau(std::string array[]); */
      void setPlateauString(std::string chaine);
@@ -23,6 +25,7 @@ public:
      std::string getEl(int x, int y);
      int getNbLines();
      int getNbColonnes();
+     int getNbCases();
      std::string toString();
      int *searchFirstEmptyCase();
      // set
