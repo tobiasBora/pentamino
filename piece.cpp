@@ -33,7 +33,7 @@ Piece::Piece(string chaine)
 Piece::Piece(std::vector< std::vector<std::string> > *tableau)
 {
      m_name = "?";
-     m_tableau = new vector< vector<string> >(tableau);
+     m_tableau = new vector< vector<string> >(*tableau);
 }
 
 Piece::~Piece()
@@ -331,7 +331,7 @@ void Piece::rename(string apres)
 
 }
 
-Piece *transform(int angle)
+Piece *Piece::transform(int angle)
 {
      // On fait tourner la piece d'un angle donné :
      // 0 = rien
@@ -343,35 +343,36 @@ Piece *transform(int angle)
 
      if(angle == 0)
      {
-	  return *this;
+	  return this;
      }
      
      int nbLines = getNbLines();
      int nbColonnes = getNbColonnes();
+     vector< vector<string> > *tabFinal = new vector< vector<string> >(nbColonnes, vector<string>(nbLines, "0"));
      if(angle == 1 || angle == 3)
 	  tabFinal = new vector< vector<string> >(nbColonnes, vector<string>(nbLines, "0"));
      else
 	  tabFinal = new vector< vector<string> >(nbLines, vector<string>(nbColonnes, "0"));
 
-     for(int i=0; i < nbLines, i++)
+     for(int i=0; i < nbLines; i++)
      {
 	  for(int j=0; j < nbColonnes; j++)
 	  {
 	       if(angle == 0)
-		    tabFinal.at(i)->(j) = getEl(i,j);
+		    tabFinal->at(i).at(j) = getEl(i,j);
 	       else if(angle == 1)
-		    tabFinal.at(nbColonnes - j - 1)->at(nbLines - i - 1) = getEl(i,j);
+		    tabFinal->at(nbColonnes - j - 1).at(nbLines - i - 1) = getEl(i,j);
 	       else if(angle == 2)
-		    tabFinal.at(nbLines - i - 1)->at(nbColonnes - j - 1) = getEl(i,j);
+		    tabFinal->at(nbLines - i - 1).at(nbColonnes - j - 1) = getEl(i,j);
 	       else if(angle == 3)
-		    tabFinal.at(j)->at(i) = getEl(i,j);
+		    tabFinal->at(j).at(i) = getEl(i,j);
 	       else if(angle == 4)
-		    tabFinal.at(nbLines - i -1)->at(j) = getEl(i,j);
+		    tabFinal->at(nbLines - i -1).at(j) = getEl(i,j);
 	       else if(angle == 5)
-		    tabFinal.at(i)->at(nbColonnes - j - 1) = getEl(i,j);
+		    tabFinal->at(i).at(nbColonnes - j - 1) = getEl(i,j);
 
 	  }
      }
 
-     return new Piece(*tabFinal);
+     return new Piece(tabFinal);
 }
