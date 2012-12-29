@@ -16,7 +16,7 @@ Pentamino::Pentamino()
        aaabb
 
       */
-     
+     // Version qui fonctionne :
      // Création du plateau
      Plateau *plateau2 = new Plateau();
      cout << "--- Plateau vide ---" << endl;
