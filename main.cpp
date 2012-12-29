@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     qDebug() << "########################################";
 
     Pentamino *pentamino = new Pentamino();
-    pentamino->lancer();
+    // pentamino->lancer();
 
     // QApplication a(argc, argv);
     // MainWindow w;

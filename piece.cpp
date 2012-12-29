@@ -100,7 +100,6 @@ void Piece::setPieceString(string chaine)
      char caractere;
      unsigned int nbLines = 0;
      caractere = ' ';
-     
      for(unsigned int i=0; i < chaine.size(); i++)
      {
 	  
@@ -130,10 +129,8 @@ void Piece::setPieceString(string chaine)
 	  nbLines++;
      }
      
-     
-     m_tableau->clear();
+     // m_tableau->clear();
      m_tableau = new vector< vector<string> >(nbLines, vector<string>(maxChar, "0"));
-     
      
      int line = 0;
      currentChar = 0;
@@ -168,8 +165,7 @@ void Piece::setPieceString(string chaine)
 	       currentChar++;
 	  }
      }
-     
-     
+          
 }
 
 void Piece::afficher()

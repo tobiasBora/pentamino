@@ -10,6 +10,8 @@ class Plateau
 {
 public:
      Plateau();
+     // Constructeur de copie :
+     Plateau(Plateau const& plateauACopier);
      void setPlateau(std::string file);
      /* void setPlateau(std::string array[]); */
      void setPlateauString(std::string chaine);
@@ -22,6 +24,7 @@ public:
      int getNbLines();
      int getNbColonnes();
      std::string toString();
+     int *searchFirstEmptyCase();
      // set
      void setEl(int x, int y, std::string value);
 

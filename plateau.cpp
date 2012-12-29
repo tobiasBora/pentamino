@@ -24,6 +24,12 @@ Plateau::Plateau()
 
 }
 
+// Constructeur de copie :
+Plateau::Plateau(Plateau const& plateauACopier)
+{
+     m_tableau = new vector< vector<string> >(*plateauACopier.m_tableau);
+}
+
 void Plateau::setPlateau(string fileName)
 {     
      // Pour remplir le plateau avec le contenu d'un fichier
@@ -57,7 +63,7 @@ void Plateau::setPlateau(string fileName)
 	  fichier.seekg(0);
 
 	  // On vide le tableau pour le remplir à 0
-	  m_tableau->clear();
+	  // m_tableau->clear();
 
 	  m_tableau = new vector< vector<string> >(nbLine, vector<string>(maxChar, "0"));
 
@@ -179,6 +185,7 @@ int Plateau::addPiece(Piece *piece, int x, int y)
 {
      // On retourne -1 si la piece dépasse le tableau
      // On retourne -2 si la piece chevauche une autre pièce ou une case interdite
+     // Sinon retourne 1 (aucun problème)
 
      // On vérifie qu'on peut le faire au niveau de la place
      if( getNbLines() < x + piece->getNbLines()
@@ -301,6 +308,34 @@ int Plateau::getNbColonnes()
 {
      return m_tableau->at(0).size();
 }
+
+int *Plateau::searchFirstEmptyCase()
+{
+     // Retourne un tableau de deux cases :
+     int lines = getNbLines();
+     int colonnes = getNbColonnes();
+     int *array= new int[2];
+
+     array[0]=-1;
+     array[1]=-1;
+     
+     // On vérifie si il n'est pas remplit :
+     for(int i=0; i<lines; i++)
+     {
+	  for(int j=0; j<colonnes; j++)
+	  {
+	       if(getEl(i,j) == "1")
+	       {
+		    array[0]=i;
+		    array[1]=j;
+		    return array;
+	       }
+	  }
+     }
+
+     return array;
+}
+
 // Fonctions set :
 
 void Plateau::setEl(int x,int y,std::string value)
