@@ -6,6 +6,8 @@
 #include <vector>
 #include <typeinfo>
 #include "piece.h"
+#include <sstream>
+
 /*
   Dans un tableau :
   0 = Case interdite (hors tableau)
@@ -266,6 +268,61 @@ void Plateau::afficher()
 		    cout << ".";
 	       else
 		    cout << Case;
+	  }
+	  cout << "|";
+	  cout << endl;
+     }
+}
+
+
+class colorName
+{
+public:
+     colorName(string n, string c):name(n),color(c)
+     {}
+     string name;
+     string color;
+     
+};
+
+void Plateau::afficherColor()
+{
+     vector< colorName > *liste = new vector< colorName >;
+     string Case;
+     int colorNb = 1;
+     for(int i = 0; i < getNbLines(); i++)
+     {
+	  cout << "|";
+	  for(int j = 0; j < getNbColonnes(); j++)
+	  {
+	       
+	       Case = getEl(i,j);
+	       // On regarde si on a déjà écrit Case :
+	       string color = "";
+	       for(unsigned int k=0; k < liste->size(); k++)
+	       {
+		    if(liste->at(k).name == Case)
+			 color = liste->at(k).color;
+	       }
+	       if(color == "")
+	       {
+		    ostringstream ss;
+		    ss << "\033[7;" << colorNb + 30 << "m";
+		    color = ss.str();
+		    liste->push_back(colorName(Case, color));
+		    colorNb++;
+		    if(colorNb > 7)
+			 colorNb = 1;
+	       }
+
+	       // On affiche
+	       if(Case == "0")
+		    cout << " ";
+	       else if(Case == "1")
+		    cout << ".";
+	       else
+		    cout << color << Case << "\033[0m";
+	       
 	  }
 	  cout << "|";
 	  cout << endl;

@@ -4,6 +4,7 @@
 #include "plateau.h"
 #include "piece.h"
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -70,9 +71,9 @@ Pentamino::Pentamino()
      tableauPieces->push_back( new Piece("1111\n0001"));
      tableauPieces->push_back( new Piece("11\n01\n011"));
      tableauPieces->push_back( new Piece("11\n01\n11"));
-     // tableauPieces->push_back( new Piece("01\n111\n001"));
+     tableauPieces->push_back( new Piece("01\n111\n001"));
      // Avec rotation :
-     tableauPieces->push_back( new Piece("011\n11\n01"));
+     // tableauPieces->push_back( new Piece("011\n11\n01"));
      /*  
 	 010
 	 111
@@ -121,6 +122,8 @@ Pentamino::Pentamino()
      {
 	  cout << "Une solution a été trouvée :" << endl;
 	  plateauFinal->afficher();
+	  cout << "Et en couleur : " << endl;
+	  plateauFinal->afficherColor();
      }
      else
      {
@@ -130,7 +133,8 @@ Pentamino::Pentamino()
      // cout << "--- piece1 ---" << endl;
      // piece1->afficher();
 
-     
+
+
 /*
      // Création du plateau
      plateau = new Plateau();

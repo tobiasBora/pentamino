@@ -19,6 +19,7 @@ public:
      void setPlateauString(std::string chaine);
      int addPiece(Piece *piece, int x, int y);
      void afficher();
+     void afficherColor();
      int check(int what=0);
 
      // get
